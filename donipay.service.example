@@ -1,0 +1,21 @@
+[Unit]
+Description=DoniPay Gunicorn service
+After=network.target
+
+[Service]
+User=donipay
+Group=donipay
+WorkingDirectory=/opt/donipay
+EnvironmentFile=/opt/donipay/.env
+ExecStart=/opt/donipay/venv/bin/gunicorn \
+  --workers 3 \
+  --bind 127.0.0.1:8080 \
+  --access-logfile /var/log/donipay/gunicorn-access.log \
+  --error-logfile /var/log/donipay/gunicorn-error.log \
+  donipay_card2card:app
+
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
